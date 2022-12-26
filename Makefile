@@ -10,7 +10,7 @@ OBJ	=	$(SRC:.c=.o)
 
 CC 	=	gcc
 
-CFLAGS	=	-g -W -Wall -Wextra
+CFLAGS	=	-g -W -Wall -Wextra -I ./includes
 
 all	:	$(NAME)
 
@@ -24,3 +24,5 @@ fclean	:	clean
 		rm -f $(NAME)
 
 re	:	fclean $(NAME)
+
+prog	:	$(NAME) clean
