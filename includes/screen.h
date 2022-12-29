@@ -1,5 +1,5 @@
 // 
-/// screen.h
+/// Header for the main structures and enums
 //
 
 // All screens consist of many strings written on different places, and this struct aims at automating the printing of each screen regardless of what needs to be printed.
@@ -10,13 +10,16 @@
 #include <ncurses.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-// Code of the associated screen
+// Code of the associated screen.
+// Size is here to have the null-terminated array of 
 enum screen_code {
     MENU = 0,
     USE = 1,
     TIMER_SELECT = 2,
-    TIMER = 3
+    TIMER = 3,
+    SCREEN_ARRAY_SIZE
 };
 
 // Is the position the beginning, the center, or the end of the string?
@@ -33,23 +36,18 @@ typedef struct s_message {
     int x;
     int y;
     int pos;
-    /* Since there these come in a definite number in the stack, we just hzve them as a NULL-terminated array. */
+    struct s_message *next;
 } t_message;
-
-typedef struct s_hmessage {
-    t_message message;
-    struct s_hmessage *next;    /* Since we want to be able to add strings at runtime, we have this as a linked list. */
-} t_hmessage;
-
-t_message menu_stack_messages[] = {
-    {"C Timer", 0, 2, CENTER},
-    {"By Stepan Smirnov", 4, 0, START},
-    {NULL, 0, 0, NONE}
-};
 
 // All the srings in one struct
 typedef struct s_screen {
-    int code;
-    t_hmessage *heap_messages;   /* The messages that can change, i.e. time, selected or not, etc...*/
-    t_message *stack_messages;  /* A buch of messages that are static and will never be changed */
+    int code;                   /* The code of the struct associated with the screen. */
+    t_message *messages;
 } t_screen;
+
+typedef struct s_master {
+    WINDOW *win;     /* The window */
+    int current;        /* The screen we are in. */
+    int timer;          /* The timer, if there is one. */
+    t_screen screens[SCREEN_ARRAY_SIZE];
+} t_master;

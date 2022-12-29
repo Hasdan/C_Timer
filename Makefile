@@ -4,7 +4,9 @@
 
 NAME 	=	c_timer
 
-SRC	=	src/main.c
+SRC	=	src/main.c	\
+		src/init_screens.c	\
+		src/utils.c
 
 OBJ	=	$(SRC:.c=.o)
 
